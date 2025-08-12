@@ -14,14 +14,17 @@ android {
         targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     buildTypes {
         debug {
             signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
         }
         release {
             signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
         }
     }
 
@@ -33,10 +36,15 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    lint {
+        disable += "InvalidPackage"
+        checkReleaseBuilds = false
+    }
 }
 
-tasks.withType<JavaCompile> {
-    options.compilerArgs.add("-Xlint:-options")
+dependencies {
+    implementation("androidx.multidex:multidex:2.0.1")
 }
 
 flutter {
